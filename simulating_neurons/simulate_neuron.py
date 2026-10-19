@@ -84,7 +84,7 @@ def generate_input_spike_rates_for_simulation(args, sim_duration_ms, count_exc_n
     inh_spike_rate_per_netcon_per_1ms = np.kron(inh_spike_rate_per_netcon_per_1ms, np.ones((1,keep_inst_rate_const_for_ms)))[:,:sim_duration_ms]
     
     # filter the inst rates according to smoothing sigma
-    smoothing_window = signal.gaussian(1.0 + args.temporal_inst_rate_smoothing_sigma_mult * temporal_inst_rate_smoothing_sigma, std=temporal_inst_rate_smoothing_sigma)[np.newaxis,:]
+    smoothing_window = signal.windows.gaussian(1.0 + args.temporal_inst_rate_smoothing_sigma_mult * temporal_inst_rate_smoothing_sigma, std=temporal_inst_rate_smoothing_sigma)[np.newaxis,:]
     smoothing_window /= smoothing_window.sum()
     netcon_inst_rate_exc_smoothed  = signal.convolve(exc_spike_rate_per_netcon_per_1ms,  smoothing_window, mode='same')
     netcon_inst_rate_inh_smoothed = signal.convolve(inh_spike_rate_per_netcon_per_1ms, smoothing_window, mode='same')
